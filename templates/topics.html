@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+{% load humanize %}
+
+{% block title %}
+    {{ board.name }} - {{ blcok.super }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'home'  %}">板块</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        {{ board.name }}
+    </li>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="mb-4">
+        <a class="btn btn-primary" href="{% url 'new_topic' board.pk %}">新帖</a>
+    </div>
+
+    <table class="table mb-4 table-striped">
+
+        <thead class="thead-dark">
+            <tr>
+                <th>帖子</th>
+                <th>发起者</th>
+                <th>评论</th>
+                <th>访问量</th>
+                <th>最近更新</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for topic in topics %}
+                <tr>
+                    <td><a href="{% url 'topic_ports' board.pk topic.pk %}">{{ topic.subject }}</a></td>
+                    <td>{{ topic.starter.username }}</td>
+                    <td>{{ topic.replies }}</td>
+                    <td>{{ topic.views }}</td>
+                    <td>{{ topic.last_updated|naturaltime }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+    {% include 'includes/pagination.html' %}
+{% endblock %}
